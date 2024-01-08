@@ -1,0 +1,58 @@
+{
+  "name": "apex-zk-curve-sdk",
+  "version": "0.0.111",
+  "packageManager": "yarn@1.22.21",
+  "author": "LiHang <1329075357@qq.com>",
+  "license": "MIT",
+  "funding": "https://github.com/LiHang941",
+  "homepage": "https://github.com/l2dex/zk-js-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/l2dex/zk-js-sdk.git"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.cjs.json && webpack",
+    "build:umd": "webpack",
+    "clean": "rimraf dist dist.umd",
+    "lint": "eslint . --fix",
+    "release": "bumpp && npm publish",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "ethers": "^5.4.4"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "bignumber.js": "^9.1.2",
+    "zksync-crypto": "^0.6.1",
+    "ethers": "^5.4.4",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.15.8",
+    "@types/lodash": "^4.14.201",
+    "@types/node": "^20.8.10",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "eslint": "^8.55.0",
+    "lint-staged": "^15.0.2",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
+}
