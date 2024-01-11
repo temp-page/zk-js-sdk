@@ -1,0 +1,59 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ApiProvider = void 0;
+const tool_1 = require("../tool");
+const BaseApi_1 = require("./BaseApi");
+const AddressInfo_1 = require("../../config/AddressInfo");
+const zksdk_1 = require("../../zksdk");
+const AccountApi_1 = require("./AccountApi");
+const PoolApi_1 = require("./PoolApi");
+const SwapApi_1 = require("./SwapApi");
+async function zkRestProvider() {
+    const addressInfo = (0, AddressInfo_1.getCurrentAddressInfo)();
+    const tokens = {};
+    for (let i = 0; i < addressInfo.tokens.length; i++) {
+        tokens[addressInfo.tokens[i].symbol] = {
+            "address": addressInfo.tokens[i].address,
+            "decimals": addressInfo.tokens[i].decimals,
+            "symbol": addressInfo.tokens[i].symbol,
+            "id": i
+        };
+    }
+    return await zksdk_1.RestProvider.newProvider(addressInfo.baseUrl, addressInfo.chainId, tokens);
+}
+/**
+ * 请求基类 详细信息查看
+ */
+let ApiProvider = class ApiProvider {
+    constructor() {
+        this.baseApi = BaseApi_1.BASE_API;
+    }
+    accountApi() {
+        return (0, tool_1.mixProxy)(AccountApi_1.AccountApi);
+    }
+    poolApi() {
+        return (0, tool_1.mixProxy)(PoolApi_1.PoolApi);
+    }
+    swapApi() {
+        return (0, tool_1.mixProxy)(SwapApi_1.SwapApi);
+    }
+    async zkSyncProvider() {
+        return await (0, tool_1.getCache)().getByCreate('zkSyncProvider-' + BaseApi_1.BASE_API.address().chainId, () => {
+            return [zkRestProvider(), 0];
+        });
+    }
+};
+exports.ApiProvider = ApiProvider;
+exports.ApiProvider = ApiProvider = __decorate([
+    (0, tool_1.CacheKey)('ApiProvider'),
+    __metadata("design:paramtypes", [])
+], ApiProvider);
